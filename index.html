@@ -7,14 +7,15 @@
   <style>
     :root{
       --bg:#000;
-      --text:#fff;
+      --text:#ffffff;
       --muted:#9aa7bb;
-      --accent:#2f8cff;
+      --accent:#0047AB; /* 사용자 지정 컬러 */
       --accent-2:#6be0ff;
       --card: rgba(255,255,255,0.03);
-      --glass: rgba(255,255,255,0.025);
-      --radius:16px;
+      --glass: rgba(255,255,255,0.02);
+      --radius:14px;
       --max-width:1100px;
+      --gap:18px;
     }
     *{box-sizing:border-box}
     html{scroll-behavior:smooth}
@@ -29,125 +30,159 @@
       justify-content:center;
       -webkit-font-smoothing:antialiased;
       -moz-osx-font-smoothing:grayscale;
+      line-height:1.4;
     }
     .wrap{width:100%;max-width:var(--max-width)}
 
-    /* HERO / LOGO BOX */
-    .hero{
-      text-align:center;
-      margin-bottom:22px;
-      padding:28px 18px;
+    /* HEADER CARD (요청한 사각 틀) */
+    .header-card{
       border-radius:18px;
-      background: linear-gradient(180deg, rgba(255,255,255,0.01), transparent);
-      border:1px solid rgba(255,255,255,0.03);
+      border:2px solid var(--accent);
+      padding:18px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.005));
+      display:flex;
+      flex-direction:column;
+      gap:14px;
+      align-items:stretch;
+    }
+
+    /* Top row: logo left / NewBit stack right */
+    .top-row{
+      display:flex;
+      gap:18px;
+      align-items:center;
+      justify-content:flex-start;
     }
     .logo-box{
-      width:128px;
-      height:128px;
-      margin:0 auto;
-      border-radius:18px;
+      width:132px;
+      height:132px;
+      border-radius:14px;
       display:flex;
       align-items:center;
       justify-content:center;
-      background: linear-gradient(135deg, rgba(47,140,255,0.06), rgba(107,224,255,0.03));
-      border:1px solid rgba(47,140,255,0.12);
-      box-shadow: 0 10px 30px rgba(47,140,255,0.05);
+      background:linear-gradient(135deg, rgba(0,71,171,0.12), rgba(107,224,255,0.02));
+      box-shadow: 0 8px 30px rgba(0,71,171,0.08);
+      border:1px solid rgba(255,255,255,0.04);
+      flex:0 0 auto;
     }
     .logo{
       font-family: "Segoe UI Symbol", "Noto Sans", system-ui;
       font-weight:900;
-      font-size:56px;
-      line-height:1;
+      font-size:72px; /* 가장 큼 */
+      line-height:0.95;
       color:var(--accent-2);
       text-shadow:
-        0 0 14px rgba(107,224,255,0.06),
-        0 0 28px rgba(47,140,255,0.10);
-      display:inline-block;
+        0 0 12px rgba(107,224,255,0.06),
+        0 0 22px rgba(0,71,171,0.12);
+    }
+
+    /* Brand stacked to the right of logo */
+    .brand-stack{
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+      gap:6px;
+      flex:1 1 auto;
+      min-width:0;
+    }
+    .brand-main{
+      font-size:28px; /* NewBit (위) */
+      font-weight:800;
+      color:var(--text);
+      letter-spacing:0.6px;
     }
     .brand-sub{
-      margin-top:10px;
-      font-size:20px;
+      font-size:18px; /* 뉴빗 (아래) */
+      color:var(--muted);
       font-weight:700;
-      letter-spacing:1px;
     }
 
-    /* Member quick list under logo */
-    .name-list{
-      margin-top:16px;
+    /* Names row inside card */
+    .names-row{
+      display:flex;
+      gap:14px;
+      justify-content:center;
+      flex-wrap:wrap;
+      margin-top:6px;
+    }
+    .name-pill{
+      padding:8px 12px;
+      border-radius:10px;
+      background:rgba(255,255,255,0.02);
+      border:1px solid rgba(255,255,255,0.02);
+      color:var(--text);
+      font-weight:700;
+      min-width:72px;
+      text-align:center;
+      font-size:14px;
+    }
+
+    /* Divider line (---) */
+    .divider{
+      height:1px;
+      background:linear-gradient(90deg, rgba(255,255,255,0.02), var(--accent), rgba(255,255,255,0.02));
+      border-radius:2px;
+      margin:6px 0;
+      box-shadow:0 1px 0 rgba(0,0,0,0.6) inset;
+    }
+
+    /* Click button centered */
+    .click-row{
       display:flex;
       justify-content:center;
-      gap:18px;
-      flex-wrap:wrap;
+      align-items:center;
+      gap:12px;
+      padding:6px 0 4px;
     }
-    .name-entry{
-      width:100px;
-      text-align:center;
-    }
-    .member-label{
-      font-weight:700;
-      font-size:14px;
-      margin-bottom:6px;
-      color:var(--text);
-    }
-    .toggle-btn{
-      display:inline-block;
-      padding:6px 10px;
-      font-size:12px;
+    .click-btn{
+      padding:8px 18px;
+      border-radius:10px;
       background:transparent;
-      color:var(--accent-2);
-      border:1px solid rgba(107,224,255,0.18);
-      border-radius:8px;
+      color:var(--accent);
+      border:2px solid var(--accent);
+      font-weight:700;
       cursor:pointer;
-      transition:transform .12s ease, background .12s ease;
+      transition:all .18s ease;
+      font-size:14px;
     }
-    .toggle-btn:active{ transform:translateY(1px); }
-    .toggle-btn.open{
-      background:linear-gradient(90deg,var(--accent),var(--accent-2));
-      color:#000;
-      border-color:transparent;
-      box-shadow:0 10px 30px rgba(47,140,255,0.06);
+    .click-btn.open{
+      background:var(--accent);
+      color:#fff;
+      box-shadow:0 10px 30px rgba(0,71,171,0.12);
+      transform:translateY(-2px);
     }
 
-    /* Group info collapsible (under logo area) */
-    .group-info-wrap{
-      max-width:820px;
-      margin:14px auto 0 auto;
+    /* Collapsible group info inside the same card (아래로 펼쳐짐) */
+    .group-panel{
       overflow:hidden;
       transition:all .36s cubic-bezier(.2,.9,.2,1);
-      border-radius:12px;
-      border:1px solid rgba(255,255,255,0.03);
-      background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.005));
-      box-shadow: 0 10px 30px rgba(0,0,0,0.45);
-    }
-    .group-info{
-      padding:0 18px;
       max-height:0;
       opacity:0;
-      transition:all .36s cubic-bezier(.2,.9,.2,1);
+      padding:0 8px;
+      border-radius:10px;
+      margin-top:0;
     }
-    .group-info.open{
-      padding:14px 18px;
-      max-height:420px;
+    .group-panel.open{
+      max-height:480px;
       opacity:1;
+      padding:12px 12px 18px 12px;
     }
-    .group-info h4{
-      margin:6px 0;
-      font-size:16px;
-      color:var(--accent-2);
-    }
-    .group-info p{
-      margin:8px 0 0 0;
+    .group-panel .gi-inner{
+      background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.005));
+      border-radius:10px;
+      border:1px solid rgba(255,255,255,0.03);
+      padding:12px;
       color:var(--muted);
       line-height:1.6;
       font-size:14px;
     }
 
-    /* Top TOC (keeps for quick scroll) */
+    /* keep a small TOC beneath header-card (optional) */
     .toc{
       display:flex;
       gap:10px;
       justify-content:center;
-      margin-top:18px;
+      margin-top:12px;
       flex-wrap:wrap;
     }
     .toc a{
@@ -161,16 +196,16 @@
       font-size:13px;
       background:transparent;
     }
-    .toc a:hover{ color:#fff; border-color: rgba(47,140,255,0.12); }
+    .toc a:hover{ color:#fff; border-color: rgba(0,71,171,0.12); }
 
-    /* MEMBERS / Cards / Details (kept similar) */
+    /* MEMBERS area */
     .section-head{ display:flex; align-items:center; justify-content:space-between; margin:26px 0 12px 0; }
     .section-head h3{ margin:0; font-size:16px; letter-spacing:2px; color:var(--text); }
     .section-head .hint{ color:var(--muted); font-size:13px; }
 
     .members-grid{ display:grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap:16px; }
     .member-card{ display:block; background:var(--card); border-radius:12px; padding:12px; text-align:center; text-decoration:none; color:inherit; border:1px solid rgba(255,255,255,0.02); transition:transform .18s ease, box-shadow .18s ease; }
-    .member-card:hover{ transform:translateY(-8px); box-shadow:0 18px 40px rgba(47,140,255,0.06); border-color: rgba(47,140,255,0.12); }
+    .member-card:hover{ transform:translateY(-8px); box-shadow:0 18px 40px rgba(0,71,171,0.06); border-color: rgba(0,71,171,0.12); }
     .avatar{ width:100%; aspect-ratio:1/1; border-radius:10px; overflow:hidden; background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); display:flex; align-items:center; justify-content:center; }
     .avatar img{ width:100%; height:100%; object-fit:cover; display:block; }
     .member-name{ margin-top:10px; font-weight:700; font-size:15px; }
@@ -186,8 +221,10 @@
 
     @media(max-width:720px){
       .logo-box{ width:100px; height:100px }
-      .logo{ font-size:44px }
-      .name-entry{ width:72px }
+      .logo{ font-size:56px }
+      .brand-main{ font-size:22px }
+      .brand-sub{ font-size:14px }
+      .names-row{ gap:8px }
     }
 
     /* anchor offset */
@@ -196,60 +233,62 @@
 </head>
 <body>
   <div class="wrap">
-    <header class="hero" role="banner">
-      <div class="logo-box" aria-hidden="true">
-        <div class="logo">ꔘ ᗲ</div>
-      </div>
+    <!-- HEADER CARD -->
+    <div class="header-card" role="banner" aria-label="NewBit header">
+      <div class="top-row">
+        <div class="logo-box" aria-hidden="true">
+          <div class="logo">ꔘ ᗲ</div>
+        </div>
 
-      <div class="brand-sub">NewBit</div>
-
-      <!-- Member names under logo with CLICK buttons -->
-      <div class="name-list" aria-hidden="false">
-        <div class="name-entry">
-          <div class="member-label">서하</div>
-          <button class="toggle-btn" data-member="서하">[CLICK]</button>
-        </div>
-        <div class="name-entry">
-          <div class="member-label">온도</div>
-          <button class="toggle-btn" data-member="온도">[CLICK]</button>
-        </div>
-        <div class="name-entry">
-          <div class="member-label">영하</div>
-          <button class="toggle-btn" data-member="영하">[CLICK]</button>
-        </div>
-        <div class="name-entry">
-          <div class="member-label">은</div>
-          <button class="toggle-btn" data-member="은">[CLICK]</button>
-        </div>
-        <div class="name-entry">
-          <div class="member-label">신우</div>
-          <button class="toggle-btn" data-member="신우">[CLICK]</button>
+        <div class="brand-stack" aria-hidden="false">
+          <div class="brand-main">NewBit</div>
+          <div class="brand-sub">뉴빗</div>
+          <!-- names moved inside the same card but below the brand visual -->
+          <div style="height:8px"></div>
         </div>
       </div>
 
-      <!-- Collapsible group info (hidden by default) -->
-      <div class="group-info-wrap" id="group-info-wrap" aria-hidden="true">
-        <div id="group-info" class="group-info" role="region" aria-live="polite">
-          <h4>NewBit — Group Info</h4>
-          <p id="group-info-text"><!-- 그룹 소개 텍스트을 여기에 넣으세요. -->NewBit의 그룹 소개를 여기에 작성하세요. 이 영역은 [CLICK] 버튼을 눌러 펼치고 접을 수 있습니다.</p>
-        </div>
+      <!-- Names row (inside card) -->
+      <div class="names-row" aria-label="Member names">
+        <div class="name-pill">서하</div>
+        <div class="name-pill">온도</div>
+        <div class="name-pill">영하</div>
+        <div class="name-pill">은</div>
+        <div class="name-pill">신우</div>
       </div>
 
-      <!-- Top navigation quick links (scroll) -->
-      <nav class="toc" aria-label="Members quick navigation">
-        <a href="#seoha">서하</a>
-        <a href="#ondo">온도</a>
-        <a href="#yeongha">영하</a>
-        <a href="#eun">은</a>
-        <a href="#shinwoo">신우</a>
-      </nav>
-    </header>
+      <div class="divider" aria-hidden="true"></div>
 
+      <!-- CLICK button that toggles the GROUP INFO (NewBit 소개) -->
+      <div class="click-row">
+        <button id="group-toggle" class="click-btn" aria-expanded="false" aria-controls="group-panel">[CLICK]</button>
+      </div>
+
+      <!-- Collapsible group info panel inside card -->
+      <div id="group-panel" class="group-panel" aria-hidden="true">
+        <div class="gi-inner" id="group-info" role="region" aria-live="polite">
+          <!-- 기본 텍스트; 수정하려면 여기에 내용을 직접 바꾸세요 -->
+          <strong>NewBit</strong><br>
+          NewBit(뉴빗)는 신규 아이돌 유닛입니다. 이 곳에 그룹 소개 문구, 활동 정보, 콘셉트나 멤버 구성 같은 설명을 적어주세요.
+        </div>
+      </div>
+    </div>
+
+    <!-- optional small TOC for quick scroll -->
+    <nav class="toc" aria-label="Members quick navigation" style="margin-top:12px">
+      <a href="#seoha">서하</a>
+      <a href="#ondo">온도</a>
+      <a href="#yeongha">영하</a>
+      <a href="#eun">은</a>
+      <a href="#shinwoo">신우</a>
+    </nav>
+
+    <!-- MEMBERS / Cards -->
     <main>
       <section>
         <div class="section-head">
           <h3>MEMBERS</h3>
-          <div class="hint">클릭하면 아래 상세 정보로 이동</div>
+          <div class="hint">카드를 클릭하면 아래 상세 정보로 이동합니다</div>
         </div>
 
         <div class="members-grid" id="members">
@@ -295,6 +334,7 @@
         </div>
       </section>
 
+      <!-- DETAILS -->
       <section class="details" id="member-details" aria-live="polite">
         <div id="seoha" class="anchor-offset"></div>
         <article class="detail" aria-labelledby="seoha-title">
@@ -333,49 +373,19 @@
 
   <script>
     (function(){
-      const groupWrap = document.getElementById('group-info-wrap');
-      const groupInfo = document.getElementById('group-info');
-      const groupText = document.getElementById('group-info-text');
-      const buttons = Array.from(document.querySelectorAll('.toggle-btn'));
+      const toggleBtn = document.getElementById('group-toggle');
+      const panel = document.getElementById('group-panel');
 
-      let currentMember = null;
-
-      function openGroup(member){
-        groupWrap.setAttribute('aria-hidden','false');
-        groupInfo.classList.add('open');
-        // optional: show which member triggered it
-        groupText.innerHTML = '<strong>NewBit</strong> 그룹 정보 영역입니다. (Triggered by: ' + member + ')<br><br>여기에 그룹 소개를 적어주세요.';
-        currentMember = member;
-        // highlight the pressed button
-        buttons.forEach(b => b.classList.toggle('open', b.dataset.member === member));
-        // scroll into view slightly below logo
-        groupWrap.scrollIntoView({behavior:'smooth', block:'center'});
-      }
-
-      function closeGroup(){
-        groupWrap.setAttribute('aria-hidden','true');
-        groupInfo.classList.remove('open');
-        buttons.forEach(b => b.classList.remove('open'));
-        currentMember = null;
-      }
-
-      buttons.forEach(btn=>{
-        btn.addEventListener('click', (e)=>{
-          const member = btn.dataset.member;
-          if(currentMember === member){
-            closeGroup();
-          } else {
-            openGroup(member);
-          }
-        });
+      toggleBtn.addEventListener('click', ()=>{
+        const isOpen = panel.classList.toggle('open');
+        toggleBtn.classList.toggle('open', isOpen);
+        toggleBtn.setAttribute('aria-expanded', String(isOpen));
+        panel.setAttribute('aria-hidden', String(!isOpen));
+        // if opened, scroll into view
+        if(isOpen) panel.scrollIntoView({behavior:'smooth', block:'center'});
       });
 
-      // allow ESC to close
-      window.addEventListener('keydown', (e)=>{
-        if(e.key === 'Escape') closeGroup();
-      });
-
-      // ensure anchor links still smooth-scroll and highlight TOC active (light)
+      // Smooth anchor handling for internal links
       const anchors = document.querySelectorAll('a[href^="#"]');
       anchors.forEach(a=>{
         a.addEventListener('click', (e)=>{
