@@ -1,0 +1,396 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>NewBit • ꔘ ᗲ</title>
+  <style>
+    :root{
+      --bg:#000;
+      --text:#fff;
+      --muted:#9aa7bb;
+      --accent:#2f8cff;
+      --accent-2:#6be0ff;
+      --card: rgba(255,255,255,0.03);
+      --glass: rgba(255,255,255,0.025);
+      --radius:16px;
+      --max-width:1100px;
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      min-height:100vh;
+      font-family: Inter, "Noto Sans KR", system-ui, -apple-system, "Segoe UI", Roboto, Arial;
+      background:var(--bg);
+      color:var(--text);
+      padding:36px 20px;
+      display:flex;
+      justify-content:center;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+    }
+    .wrap{width:100%;max-width:var(--max-width)}
+
+    /* HERO / LOGO BOX */
+    .hero{
+      text-align:center;
+      margin-bottom:22px;
+      padding:28px 18px;
+      border-radius:18px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.01), transparent);
+      border:1px solid rgba(255,255,255,0.03);
+    }
+    .logo-box{
+      width:128px;
+      height:128px;
+      margin:0 auto;
+      border-radius:18px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background: linear-gradient(135deg, rgba(47,140,255,0.06), rgba(107,224,255,0.03));
+      border:1px solid rgba(47,140,255,0.12);
+      box-shadow: 0 10px 30px rgba(47,140,255,0.05);
+    }
+    .logo{
+      font-family: "Segoe UI Symbol", "Noto Sans", system-ui;
+      font-weight:900;
+      font-size:56px;
+      line-height:1;
+      color:var(--accent-2);
+      text-shadow:
+        0 0 14px rgba(107,224,255,0.06),
+        0 0 28px rgba(47,140,255,0.10);
+      display:inline-block;
+    }
+    .brand-sub{
+      margin-top:10px;
+      font-size:20px;
+      font-weight:700;
+      letter-spacing:1px;
+    }
+
+    /* Member quick list under logo */
+    .name-list{
+      margin-top:16px;
+      display:flex;
+      justify-content:center;
+      gap:18px;
+      flex-wrap:wrap;
+    }
+    .name-entry{
+      width:100px;
+      text-align:center;
+    }
+    .member-label{
+      font-weight:700;
+      font-size:14px;
+      margin-bottom:6px;
+      color:var(--text);
+    }
+    .toggle-btn{
+      display:inline-block;
+      padding:6px 10px;
+      font-size:12px;
+      background:transparent;
+      color:var(--accent-2);
+      border:1px solid rgba(107,224,255,0.18);
+      border-radius:8px;
+      cursor:pointer;
+      transition:transform .12s ease, background .12s ease;
+    }
+    .toggle-btn:active{ transform:translateY(1px); }
+    .toggle-btn.open{
+      background:linear-gradient(90deg,var(--accent),var(--accent-2));
+      color:#000;
+      border-color:transparent;
+      box-shadow:0 10px 30px rgba(47,140,255,0.06);
+    }
+
+    /* Group info collapsible (under logo area) */
+    .group-info-wrap{
+      max-width:820px;
+      margin:14px auto 0 auto;
+      overflow:hidden;
+      transition:all .36s cubic-bezier(.2,.9,.2,1);
+      border-radius:12px;
+      border:1px solid rgba(255,255,255,0.03);
+      background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.005));
+      box-shadow: 0 10px 30px rgba(0,0,0,0.45);
+    }
+    .group-info{
+      padding:0 18px;
+      max-height:0;
+      opacity:0;
+      transition:all .36s cubic-bezier(.2,.9,.2,1);
+    }
+    .group-info.open{
+      padding:14px 18px;
+      max-height:420px;
+      opacity:1;
+    }
+    .group-info h4{
+      margin:6px 0;
+      font-size:16px;
+      color:var(--accent-2);
+    }
+    .group-info p{
+      margin:8px 0 0 0;
+      color:var(--muted);
+      line-height:1.6;
+      font-size:14px;
+    }
+
+    /* Top TOC (keeps for quick scroll) */
+    .toc{
+      display:flex;
+      gap:10px;
+      justify-content:center;
+      margin-top:18px;
+      flex-wrap:wrap;
+    }
+    .toc a{
+      color:var(--muted);
+      text-decoration:none;
+      padding:8px 12px;
+      border-radius:10px;
+      border:1px solid transparent;
+      transition:all .18s ease;
+      font-weight:600;
+      font-size:13px;
+      background:transparent;
+    }
+    .toc a:hover{ color:#fff; border-color: rgba(47,140,255,0.12); }
+
+    /* MEMBERS / Cards / Details (kept similar) */
+    .section-head{ display:flex; align-items:center; justify-content:space-between; margin:26px 0 12px 0; }
+    .section-head h3{ margin:0; font-size:16px; letter-spacing:2px; color:var(--text); }
+    .section-head .hint{ color:var(--muted); font-size:13px; }
+
+    .members-grid{ display:grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap:16px; }
+    .member-card{ display:block; background:var(--card); border-radius:12px; padding:12px; text-align:center; text-decoration:none; color:inherit; border:1px solid rgba(255,255,255,0.02); transition:transform .18s ease, box-shadow .18s ease; }
+    .member-card:hover{ transform:translateY(-8px); box-shadow:0 18px 40px rgba(47,140,255,0.06); border-color: rgba(47,140,255,0.12); }
+    .avatar{ width:100%; aspect-ratio:1/1; border-radius:10px; overflow:hidden; background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); display:flex; align-items:center; justify-content:center; }
+    .avatar img{ width:100%; height:100%; object-fit:cover; display:block; }
+    .member-name{ margin-top:10px; font-weight:700; font-size:15px; }
+    .member-role{ margin-top:6px; color:var(--muted); font-size:12px; }
+
+    .details{ margin-top:34px; display:flex; flex-direction:column; gap:22px; }
+    .detail{ background:var(--glass); padding:18px; border-radius:12px; border:1px solid rgba(255,255,255,0.02); }
+    .detail h2{ margin:0; font-size:20px; }
+    .detail .meta{ color:var(--muted); font-size:13px; margin-top:6px; }
+    .detail .content{ margin-top:12px; color:var(--muted); font-size:15px; line-height:1.7; min-height:48px; }
+
+    footer{ margin-top:36px; text-align:center; color:var(--muted); font-size:13px; }
+
+    @media(max-width:720px){
+      .logo-box{ width:100px; height:100px }
+      .logo{ font-size:44px }
+      .name-entry{ width:72px }
+    }
+
+    /* anchor offset */
+    .anchor-offset{ position:relative; top:-18px; padding-top:18px; margin-top:-18px; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="hero" role="banner">
+      <div class="logo-box" aria-hidden="true">
+        <div class="logo">ꔘ ᗲ</div>
+      </div>
+
+      <div class="brand-sub">NewBit</div>
+
+      <!-- Member names under logo with CLICK buttons -->
+      <div class="name-list" aria-hidden="false">
+        <div class="name-entry">
+          <div class="member-label">서하</div>
+          <button class="toggle-btn" data-member="서하">[CLICK]</button>
+        </div>
+        <div class="name-entry">
+          <div class="member-label">온도</div>
+          <button class="toggle-btn" data-member="온도">[CLICK]</button>
+        </div>
+        <div class="name-entry">
+          <div class="member-label">영하</div>
+          <button class="toggle-btn" data-member="영하">[CLICK]</button>
+        </div>
+        <div class="name-entry">
+          <div class="member-label">은</div>
+          <button class="toggle-btn" data-member="은">[CLICK]</button>
+        </div>
+        <div class="name-entry">
+          <div class="member-label">신우</div>
+          <button class="toggle-btn" data-member="신우">[CLICK]</button>
+        </div>
+      </div>
+
+      <!-- Collapsible group info (hidden by default) -->
+      <div class="group-info-wrap" id="group-info-wrap" aria-hidden="true">
+        <div id="group-info" class="group-info" role="region" aria-live="polite">
+          <h4>NewBit — Group Info</h4>
+          <p id="group-info-text"><!-- 그룹 소개 텍스트을 여기에 넣으세요. -->NewBit의 그룹 소개를 여기에 작성하세요. 이 영역은 [CLICK] 버튼을 눌러 펼치고 접을 수 있습니다.</p>
+        </div>
+      </div>
+
+      <!-- Top navigation quick links (scroll) -->
+      <nav class="toc" aria-label="Members quick navigation">
+        <a href="#seoha">서하</a>
+        <a href="#ondo">온도</a>
+        <a href="#yeongha">영하</a>
+        <a href="#eun">은</a>
+        <a href="#shinwoo">신우</a>
+      </nav>
+    </header>
+
+    <main>
+      <section>
+        <div class="section-head">
+          <h3>MEMBERS</h3>
+          <div class="hint">클릭하면 아래 상세 정보로 이동</div>
+        </div>
+
+        <div class="members-grid" id="members">
+          <a class="member-card" href="#seoha">
+            <div class="avatar">
+              <img src="images/seoha.jpg" alt="서하" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22600%22 height=%22600%22><rect width=%22600%22 height=%22600%22 fill=%22%230b0b0b%22/><text x=%2230%25%22 y=%2255%25%22 fill=%22%23aaa%22 font-size=%2240%22 font-family=%22sans-serif%22>서하</text></svg>'">
+            </div>
+            <div class="member-name">서하</div>
+            <div class="member-role"></div>
+          </a>
+
+          <a class="member-card" href="#ondo">
+            <div class="avatar">
+              <img src="images/ondo.jpg" alt="온도" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22600%22 height=%22600%22><rect width=%22600%22 height=%22600%22 fill=%22%230b0b0b%22/><text x=%2230%25%22 y=%2255%25%22 fill=%22%23aaa%22 font-size=%2240%22 font-family=%22sans-serif%22>온도</text></svg>'">
+            </div>
+            <div class="member-name">온도</div>
+            <div class="member-role"></div>
+          </a>
+
+          <a class="member-card" href="#yeongha">
+            <div class="avatar">
+              <img src="images/yeongha.jpg" alt="영하" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22600%22 height=%22600%22><rect width=%22600%22 height=%22600%22 fill=%22%230b0b0b%22/><text x=%2230%25%22 y=%2255%25%22 fill=%22%23aaa%22 font-size=%2240%22 font-family=%22sans-serif%22>영하</text></svg>'">
+            </div>
+            <div class="member-name">영하</div>
+            <div class="member-role"></div>
+          </a>
+
+          <a class="member-card" href="#eun">
+            <div class="avatar">
+              <img src="images/eun.jpg" alt="은" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22600%22 height=%22600%22><rect width=%22600%22 height=%22600%22 fill=%22%230b0b0b%22/><text x=%2230%25%22 y=%2255%25%22 fill=%22%23aaa%22 font-size=%2240%22 font-family=%22sans-serif%22>은</text></svg>'">
+            </div>
+            <div class="member-name">은</div>
+            <div class="member-role"></div>
+          </a>
+
+          <a class="member-card" href="#shinwoo">
+            <div class="avatar">
+              <img src="images/shinwoo.jpg" alt="신우" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22600%22 height=%22600%22><rect width=%22600%22 height=%22600%22 fill=%22%230b0b0b%22/><text x=%2230%25%22 y=%2255%25%22 fill=%22%23aaa%22 font-size=%2240%22 font-family=%22sans-serif%22>신우</text></svg>'">
+            </div>
+            <div class="member-name">신우</div>
+            <div class="member-role"></div>
+          </a>
+        </div>
+      </section>
+
+      <section class="details" id="member-details" aria-live="polite">
+        <div id="seoha" class="anchor-offset"></div>
+        <article class="detail" aria-labelledby="seoha-title">
+          <div class="title"><h2 id="seoha-title">서하</h2><div class="meta"></div></div>
+          <div class="content" id="seoha-content"><!-- 서하 상세 소개 작성 --> </div>
+        </article>
+
+        <div id="ondo" class="anchor-offset"></div>
+        <article class="detail" aria-labelledby="ondo-title">
+          <div class="title"><h2 id="ondo-title">온도</h2><div class="meta"></div></div>
+          <div class="content" id="ondo-content"><!-- 온도 상세 소개 작성 --> </div>
+        </article>
+
+        <div id="yeongha" class="anchor-offset"></div>
+        <article class="detail" aria-labelledby="yeongha-title">
+          <div class="title"><h2 id="yeongha-title">영하</h2><div class="meta"></div></div>
+          <div class="content" id="yeongha-content"><!-- 영하 상세 소개 작성 --> </div>
+        </article>
+
+        <div id="eun" class="anchor-offset"></div>
+        <article class="detail" aria-labelledby="eun-title">
+          <div class="title"><h2 id="eun-title">은</h2><div class="meta"></div></div>
+          <div class="content" id="eun-content"><!-- 은 상세 소개 작성 --> </div>
+        </article>
+
+        <div id="shinwoo" class="anchor-offset"></div>
+        <article class="detail" aria-labelledby="shinwoo-title">
+          <div class="title"><h2 id="shinwoo-title">신우</h2><div class="meta"></div></div>
+          <div class="content" id="shinwoo-content"><!-- 신우 상세 소개 작성 --> </div>
+        </article>
+      </section>
+
+      <footer></footer>
+    </main>
+  </div>
+
+  <script>
+    (function(){
+      const groupWrap = document.getElementById('group-info-wrap');
+      const groupInfo = document.getElementById('group-info');
+      const groupText = document.getElementById('group-info-text');
+      const buttons = Array.from(document.querySelectorAll('.toggle-btn'));
+
+      let currentMember = null;
+
+      function openGroup(member){
+        groupWrap.setAttribute('aria-hidden','false');
+        groupInfo.classList.add('open');
+        // optional: show which member triggered it
+        groupText.innerHTML = '<strong>NewBit</strong> 그룹 정보 영역입니다. (Triggered by: ' + member + ')<br><br>여기에 그룹 소개를 적어주세요.';
+        currentMember = member;
+        // highlight the pressed button
+        buttons.forEach(b => b.classList.toggle('open', b.dataset.member === member));
+        // scroll into view slightly below logo
+        groupWrap.scrollIntoView({behavior:'smooth', block:'center'});
+      }
+
+      function closeGroup(){
+        groupWrap.setAttribute('aria-hidden','true');
+        groupInfo.classList.remove('open');
+        buttons.forEach(b => b.classList.remove('open'));
+        currentMember = null;
+      }
+
+      buttons.forEach(btn=>{
+        btn.addEventListener('click', (e)=>{
+          const member = btn.dataset.member;
+          if(currentMember === member){
+            closeGroup();
+          } else {
+            openGroup(member);
+          }
+        });
+      });
+
+      // allow ESC to close
+      window.addEventListener('keydown', (e)=>{
+        if(e.key === 'Escape') closeGroup();
+      });
+
+      // ensure anchor links still smooth-scroll and highlight TOC active (light)
+      const anchors = document.querySelectorAll('a[href^="#"]');
+      anchors.forEach(a=>{
+        a.addEventListener('click', (e)=>{
+          const href = a.getAttribute('href');
+          if(!href || href === '#') return;
+          const id = href.slice(1);
+          const el = document.getElementById(id);
+          if(el){
+            e.preventDefault();
+            el.scrollIntoView({behavior:'smooth', block:'start'});
+            history.replaceState(null,'','#'+id);
+          }
+        });
+      });
+    })();
+  </script>
+</body>
+</html>
